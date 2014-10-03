@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>Priority Tracking: Firefox Desktop Platform Team</title>
+  <link rel="stylesheet" type="text/css" href="ui.css">
+  <link rel="stylesheet" type="text/css" href="jquery-ui-themes-1.11.1/themes/humanity/jquery-ui.min.css">
+  <link rel="icon" type="image/png" href="list-icon.png">
+
+<body>
+  <section id="header">
+    <h1>Priority Tracking: Firefox Desktop Platform Team</h1>
+  </section>
+  <section id="main">
+    <table id="mainTable">
+      <thead>
+        <tr>
+      <tbody>
+    </table>
+  </section>
+
+  <form id="itemForm">
+    <label for="itemBug">Bug#</label><input type="text" size="7" id="itemBug">
+    <label for="itemSync">Sync</label><input type="checkbox" id="itemSync"><br>
+
+    <label for="itemSummary">Summary</label><input type="text" size="15" id="itemSummary"><br>
+    <label for="itemOwner">Owner</label><input type="text" size="15" id="itemOwner"><br>
+  </form>
+
+  <script src="jquery-2.1.1.min.js"></script>
+  <script src="jquery-ui-1.11.1/jquery-ui.min.js"></script>
+  <script src="ui.js"></script>
