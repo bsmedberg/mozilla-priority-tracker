@@ -1,4 +1,4 @@
-var kAPI = '/api/';
+var kAPI = 'api/';
 var kBugzilla = 'https://bugzilla.mozilla.org/rest/';
 var gData;
 var gCurrentItem;
