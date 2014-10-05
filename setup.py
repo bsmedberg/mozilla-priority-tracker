@@ -21,3 +21,5 @@ setup(
         'ujson',
     ]
 )
+
+# Deploying as a FastCGI script will also require flup
