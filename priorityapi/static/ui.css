@@ -9,6 +9,14 @@ body {
   font-size: 12px;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
+input[disabled] {
+  background-color: #EEE;
+}
+
 #header,
 #main {
   display: flex;
@@ -53,7 +61,7 @@ body {
   padding: 1px 3px;
 }
 
-.status-row {
+.stage-head {
   background-color: #666;
   color: white;
 }
@@ -76,15 +84,36 @@ body {
   cursor: grab;
   overflow: hidden;
 }
+.item.current {
+  color: #900;
+}
+
+@keyframes placeholder-animation {
+  from { background-position: 0 0; }
+  to { background-position: 6px 0; }
+}
 
 .plist-placeholder {
   margin: 1px;
   padding: 1px;
   border-radius: 3px;
-  background: repeating-linear-gradient(45deg, #ccc, #ccc 2px, #bbb 2px, #bbb 4px);
+  background: repeating-linear-gradient(45deg, #ccc 0px, #bbb 3px, #ccc 6px);
+  animation: placeholder-animation 0.3s linear infinite;
   border-radius: 3px;
 }
 
 form {
   margin: 0;
+}
+
+#itemNotes {
+  width: 100%;
+}
+
+.item-summary {
+  white-space: nowrap;
+}
+
+.item-form-dialog .ui-dialog-titlebar-close {
+  visibility: hidden;
 }

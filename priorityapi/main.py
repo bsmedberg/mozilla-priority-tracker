@@ -78,7 +78,80 @@ class Root(object):
                     for (id, area, changed, priority, bugid, bugsync, summary,
                          owner, notes) in cursor]
 
-        return json.dumps({'areas': areas, 'stages': stages, 'projects': projects})
+        cursor.execute('''SELECT bugzilla_id, nickname FROM aliases''')
+        aliases = dict(i for i in cursor)
+
+        return json.dumps({'areas': areas, 'stages': stages, 'projects': projects, 'aliases': aliases})
+
+    @requires_db
+    def new(self, cursor, area, priority, bugid, bugsync, summary, owner, notes):
+        if bugid == '':
+            bugid = None
+        else:
+            bugid = int(bugid)
+        if owner == '':
+            owner = None
+        print "priority: ", priority
+        if priority == '':
+            priority = None
+        else:
+            priority = float(priority)
+        bugsync = {'true': True, 'false': False}[bugsync]
+        cursor.execute('''INSERT INTO projects
+                          (area_id, priority, bugid, bugsync, summary, owner, notes, complete)
+                          VALUES (%s, %s, %s, %s, %s, %s, %s, FALSE)''',
+                       (area, priority, bugid, bugsync, summary, owner, notes))
+        return str(cursor.lastrowid)
+
+    @requires_db
+    def update(self, id, cursor, area=None, priority=None, bugid=None, bugsync=None,
+               summary=None, owner=None, notes=None, complete=None):
+        keys = []
+        values = []
+        if area is not None:
+            if area == '':
+                area = None
+            keys.append("area_id")
+            values.append(area)
+        if priority is not None:
+            if priority == '':
+                priority = None
+            else:
+                priority = float(priority)
+            keys.append("priority")
+            values.append(priority)
+        if bugid is not None:
+            if bugid == '':
+                bugid = None
+            else:
+                bugid = int(bugid)
+            keys.append("bugid")
+            values.append(bugid)
+        if bugsync is not None:
+            bugsync = {"true": True, "false": False}[bugsync]
+            keys.append("bugsync")
+            values.append(bugsync)
+        if summary is not None:
+            keys.append("summary")
+            values.append(summary)
+        if owner is not None:
+            if owner == '':
+                owner = None
+            keys.append("owner")
+            values.append(owner)
+        if notes is not None:
+            keys.append("notes")
+            values.append(notes)
+        if complete is not None:
+            complete = {"true": True, "false": False}[complete]
+            keys.append("complete")
+            values.append(complete)
+
+        cursor.execute('UPDATE projects SET ' + \
+                           ' , '.join([k + ' = %s' for k in keys]) + \
+                           ' WHERE project_id = %s',
+                       values + [id])
+        return ''
 
 dispatcher = cherrypy.dispatch.RoutesDispatcher()
 dispatcher.controllers['root'] = Root()
@@ -89,6 +162,8 @@ def connect(route, action, methods=('GET'), **kwargs):
                               conditions=c, **kwargs)
 
 connect('/api/load', 'load')
+connect('/api/new', 'new', methods=('POST'))
+connect('/api/update/{id}', 'update', methods=('POST'))
 
 class Application(cherrypy.Application):
     _pool = None

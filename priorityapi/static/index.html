@@ -11,7 +11,8 @@
     <h1>Priority Tracking: Firefox Desktop Platform Team</h1>
   </section>
   <section id="main">
-    <table id="mainTable">
+    <div id="loadProgress"></div>
+    <table id="mainTable" class="invisible">
       <thead>
         <tr>
       <tbody>
@@ -19,12 +20,17 @@
   </section>
 
   <form id="itemForm">
-    <label for="itemBug">Bug#</label><input type="text" size="7" id="itemBug">
-    <label for="itemSync">Sync</label><input type="checkbox" id="itemSync"><br>
+    <label for="itemBug">Bug#: </label><input type="text" size="7" id="itemBug">
+    <label for="itemSync">Sync: </label><input type="checkbox" id="itemSync"><br>
 
-    <label for="itemSummary">Summary</label><input type="text" size="15" id="itemSummary"><br>
-    <label for="itemOwner">Owner</label><input type="text" size="15" id="itemOwner"><br>
+    <label for="itemSummary">Summary: </label><input type="text" size="15" id="itemSummary" placeholder="(no summary)"><br>
+    <label for="itemOwner">Owner: </label><input type="text" size="15" id="itemOwner"><br>
+    <label for="itemNotes">Notes: </label><br>
+    <textarea id="itemNotes"></textarea>
+    <div id="itemProgressBar"></div>
   </form>
+
+  <div id="errorDialog"></div>
 
   <script src="jquery-2.1.1.min.js"></script>
   <script src="jquery-ui-1.11.1/jquery-ui.min.js"></script>

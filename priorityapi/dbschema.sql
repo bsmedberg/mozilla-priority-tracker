@@ -7,13 +7,13 @@ CREATE TABLE `areas` (
 
 CREATE TABLE `projects` (
   `project_id` int NOT NULL AUTO_INCREMENT,
-  `area_id` smallint DEFAULT NULL,
+  `area_id` smallint NULL,
   `last_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `priority` float DEFAULT NULL,
-  `bugid` int DEFAULT NULL,
+  `priority` float NULL,
+  `bugid` int NULL,
   `bugsync` BOOL NOT NULL,
   `summary` varchar(255) NOT NULL,
-  `owner` varchar(80) DEFAULT NULL,
+  `owner` varchar(80) NULL,
   `notes` text NOT NULL,
   `complete` BOOL NOT NULL,
   PRIMARY KEY (`project_id`)
@@ -25,3 +25,8 @@ CREATE TABLE `stages` (
   `name` varchar(80) NOT NULL,
   PRIMARY KEY (`stage_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `aliases` (
+  `bugzilla_id` varchar(255) NOT NULL PRIMARY KEY,
+  `nickname` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
