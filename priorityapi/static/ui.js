@@ -172,7 +172,43 @@ function endOfStage(stage) {
   return gData.stages[idx + 1].priority;
 }
 
+var gCurrentSync;
+function syncCurrent() {
+  var bugid = $("#itemBug").val();
+  if (bugid == "") {
+    return;
+  }
+  bugid = parseInt(bugid);
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", kBugzilla + "bug/" + bugid);
+  xhr.setRequestHeader("Accept", "application/json");
+  xhr.onload = function() {
+    if (gCurrentSync != xhr) {
+      return;
+    }
+    if (xhr.status != 200) {
+      return;
+    }
+    var d = JSON.parse(xhr.responseText);
+    if (d.error) {
+      return;
+    }
+    var bug = d.bugs[0];
+    $("#itemSummary").val(bug.summary);
+    var owner = bug.assigned_to;
+    if (owner == "nobody@mozilla.org") {
+      owner = '';
+    } else if (owner in gData.aliases) {
+      owner = gData.alises[owner];
+    }
+    $("#itemOwner").val(owner);
+  };
+  gCurrentSync = xhr;
+  xhr.send();
+}
+
 function start() {
+  $("#itemSyncNow").on("click", syncCurrent);
   $("#itemProgressBar").progressbar({value: false}).hide();
   $("#itemForm").dialog({
     dialogClass: "item-form-dialog",
@@ -181,6 +217,7 @@ function start() {
       if (gPending) {
         throw Error("Shouldn't open while pending");
       }
+      gCurrentSync = null;
       $(".item.current").toggleClass("current", false);
       $("#itemProgressBar").hide();
       $(gCurrentItem._node).toggleClass("current", true);
@@ -198,7 +235,6 @@ function start() {
       $("#itemSummary").val(gCurrentItem.summary);
       $("#itemOwner").val(gCurrentItem.owner);
       $("#itemNotes").val(gCurrentItem.notes);
-      $("#itemSummary, #itemOwner").prop("disabled", gCurrentItem.bugsync);
     },
     beforeClose: function() {
       if (gPending) {
@@ -244,9 +280,6 @@ function start() {
     if (e.which == 13) {
       $("#itemForm").dialog("option", "buttons")[1].click();
     }
-  });
-  $("#itemSync").on("change", function() {
-    $("#itemSummary, #itemOwner").prop("disabled", $(this).prop("checked"));
   });
 
   $("#loadProgress").progressbar({value: false});
