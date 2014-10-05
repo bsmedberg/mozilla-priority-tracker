@@ -1,6 +1,6 @@
 import sys
 import cherrypy
-from priorityapi.main import Application
+from prioritytool.main import Application
 from optparse import OptionParser
 
 o = OptionParser()
