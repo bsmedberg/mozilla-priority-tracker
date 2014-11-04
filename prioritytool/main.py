@@ -162,8 +162,8 @@ def connect(route, action, methods=('GET'), **kwargs):
                               conditions=c, **kwargs)
 
 connect('/api/load', 'load')
-connect('/api/new', 'new', methods=('POST'))
-connect('/api/update/{id}', 'update', methods=('POST'))
+connect('/api/write/new', 'new', methods=('POST'))
+connect('/api/write/update/{id}', 'update', methods=('POST'))
 
 class Application(cherrypy.Application):
     _pool = None

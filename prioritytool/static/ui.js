@@ -84,7 +84,7 @@ function saveNewItem(item) {
     }
     fd.append(p, v);
   });
-  return postFormData(kAPI + "new", fd).then(function(response) { return parseInt(response); });
+  return postFormData(kAPI + "write/new", fd).then(function(response) { return parseInt(response); });
 }
 
 function saveUpdates(id, updates) {
@@ -99,7 +99,7 @@ function saveUpdates(id, updates) {
     }
     fd.append(u.key, v);
   });
-  return postFormData(kAPI + "update/" + id, fd);
+  return postFormData(kAPI + "write/update/" + id, fd);
 }
 
 function saveItem() {
