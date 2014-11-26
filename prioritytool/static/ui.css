@@ -92,6 +92,7 @@ input[disabled] {
   background-color: #ccc;
   color: black;
   border-radius: 3px;
+  cursor: -webkit-grab;
   cursor: grab;
   overflow: hidden;
 }
