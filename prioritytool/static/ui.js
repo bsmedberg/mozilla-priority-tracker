@@ -145,7 +145,7 @@ var gItemTemplate = $('<div class="item"><div class="item-summary nowrap"></div>
 function updateItemNode(item) {
   $(".item-summary", item._node).text(item.summary || "(no summary)");
   if (item.bugid) {
-    $(".item-bugid", item._node).text(item.bugid + ": ").attr("href", "https://bugzilla.mozilla.org/show_bug.cgi?id=" + item.bugid);
+    $(".item-bugid", item._node).show().text(item.bugid + ": ").attr("href", "https://bugzilla.mozilla.org/show_bug.cgi?id=" + item.bugid);
   } else {
     $(".item-bugid", item._node).hide();
   }
