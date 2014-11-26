@@ -30,3 +30,14 @@ CREATE TABLE `aliases` (
   `bugzilla_id` varchar(255) NOT NULL PRIMARY KEY,
   `nickname` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `projectchanges` (
+  `change_id` int NOT NULL AUTO_INCREMENT,
+  `project_id` int NOT NULL,
+  `changedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fieldname` varchar(20) NOT NULL,
+  `oldvalue` TEXT NULL,
+  `newvalue` TEXT NULL,
+  `sync_change` BOOL NOT NULL,
+  PRIMARY KEY (`change_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

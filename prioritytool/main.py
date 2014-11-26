@@ -81,7 +81,10 @@ class Root(object):
         cursor.execute('''SELECT bugzilla_id, nickname FROM aliases''')
         aliases = dict(i for i in cursor)
 
-        return json.dumps({'areas': areas, 'stages': stages, 'projects': projects, 'aliases': aliases})
+        cursor.execute('''SELECT MAX(change_id) FROM projectchanges''')
+        lastchange, = cursor.fetchone()
+
+        return json.dumps({'areas': areas, 'stages': stages, 'projects': projects, 'aliases': aliases, 'lastchange': lastchange})
 
     @requires_db
     def new(self, cursor, area, priority, bugid, bugsync, summary, owner, notes):
@@ -105,7 +108,10 @@ class Root(object):
 
     @requires_db
     def update(self, id, cursor, area=None, priority=None, bugid=None, bugsync=None,
-               summary=None, owner=None, notes=None, complete=None):
+               summary=None, owner=None, notes=None, complete=None, _sync_change=False):
+        if not _sync_change in (True, False):
+            raise ValueError("Unexpected value for _sync_change")
+
         keys = []
         values = []
         if area is not None:
@@ -147,10 +153,19 @@ class Root(object):
             keys.append("complete")
             values.append(complete)
 
+        cursor.execute('SELECT ' + ' , '.join(keys) + \
+                        ' FROM projects WHERE project_id = %s FOR UPDATE',
+                       [id])
+        oldvalues = cursor.fetchone()
+
         cursor.execute('UPDATE projects SET ' + \
                            ' , '.join([k + ' = %s' for k in keys]) + \
                            ' WHERE project_id = %s',
                        values + [id])
+
+        cursor.executemany('INSERT INTO projectchanges (project_id, fieldname, oldvalue, newvalue, sync_change) VALUES (%s, %s, %s, %s, %s)',
+                           [(id, keys[i], oldvalues[i], values[i], _sync_change) for i in range(0, len(keys))])
+
         return ''
 
 dispatcher = cherrypy.dispatch.RoutesDispatcher()
