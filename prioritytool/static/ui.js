@@ -403,7 +403,10 @@ function setupData() {
       return "Tech lead: " + area.lead;
     },
   });
-  $(document).on("click", ".item", function() {
+  $(document).on("click", ".item", function(e) {
+    if ($(e.target).closest("a").size()) {
+      return;
+    }
     if (gPending) {
       return;
     }
