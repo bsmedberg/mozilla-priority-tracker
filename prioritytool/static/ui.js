@@ -448,8 +448,9 @@ function setupData() {
     if (gPending) {
       return;
     }
-    gCurrentItem = $(this).data("item");
     var form = $("#itemForm");
+    form.dialog("close");
+    gCurrentItem = $(this).data("item");
     form.dialog("option", "position", { my: "left top-10", at: "right+10 center", of: this })
         .dialog("open");
   });
@@ -493,8 +494,10 @@ function setupData() {
     };
     var node = createItemNode(item);
     $(this).append(node);
+    var form = $("#itemForm");
+    form.dialog("close");
     gCurrentItem = item;
-    $("#itemForm").dialog("option", "position", { my: "left top-10", at: "right+10 center", of: this }).dialog("open");
+    form.dialog("option", "position", { my: "left top-10", at: "right+10 center", of: this }).dialog("open");
   });
 }
 start();
