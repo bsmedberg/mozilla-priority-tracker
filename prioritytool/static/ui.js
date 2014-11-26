@@ -307,6 +307,44 @@ function start() {
     gData = d;
     setupData();
   });
+  $("#searchInput").autocomplete({
+    minLength: 3,
+    position: {
+      my: "right top",
+      at: "right bottom",
+    },
+    source: function(request, response) {
+      var terms = request.term.split(" ");
+      var results = [];
+      gData.projects.forEach(function(item) {
+        var itemstr = [item.bugid, item.summary, item.owner, item.notes].join(" ");
+        var ok = true;
+        terms.forEach(function(term) {
+          if (itemstr.indexOf(term) == -1) {
+            ok = false;
+          }
+        });
+        if (ok) {
+          var label = [];
+          item.bugid && label.push(item.bugid);
+          item.owner && label.push(item.owner);
+          item.summary && label.push(item.summary);
+          results.push({label: label.join(" - "), value: item});
+        }
+      });
+      response(results);
+    },
+    select: function(e, ui) {
+      var item = ui.item.value;
+      item._node.scrollIntoView && item._node.scrollIntoView();
+      item._node.click();
+      $(this).autocomplete("close");
+      e.preventDefault();
+    },
+    focus: function(e, ui) {
+      e.preventDefault();
+    },
+  });
 }
 
 function setupData() {

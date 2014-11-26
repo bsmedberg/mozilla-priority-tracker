@@ -35,7 +35,7 @@ input[disabled] {
   padding: 2px;
 }
 
-#header * {
+#header a {
   color: inherit;
   text-decoration: inherit;
 }
@@ -97,7 +97,7 @@ input[disabled] {
   overflow: hidden;
 }
 .item.current {
-  color: #900;
+  background-color: #CC8352;
 }
 
 @keyframes placeholder-animation {
@@ -136,6 +136,22 @@ form {
 
 #menuButton {
   float: right;
+}
+
+#searchBox {
+  margin-right: 4px;
+  float: right;
+  position: relative;
+  padding-top: 4px;
+}
+
+#searchIcon {
+  position: absolute;
+  margin-top: -6px;
+  margin-left: -10px;
+}
+#searchInput {
+  padding-left: 2px;
 }
 
 .menu-icon {
