@@ -140,11 +140,15 @@ function saveItem() {
     });
 }
 
-var gItemTemplate = $('<div class="item"><div class="item-summary"></div><div><a class="item-bugid"></a> - <span class="item-owner"></span></div>');
+var gItemTemplate = $('<div class="item"><div class="item-summary nowrap"></div><div class="nowrap"><a class="item-bugid"></a><span class="item-owner"></span></div>');
 
 function updateItemNode(item) {
   $(".item-summary", item._node).text(item.summary || "(no summary)");
-  $(".item-bugid", item._node).text(item.bugid).attr("href", "https://bugzilla.mozilla.org/show_bug.cgi?id=" + item.bugid);
+  if (item.bugid) {
+    $(".item-bugid", item._node).text(item.bugid + ": ").attr("href", "https://bugzilla.mozilla.org/show_bug.cgi?id=" + item.bugid);
+  } else {
+    $(".item-bugid", item._node).hide();
+  }
   $(".item-owner", item._node).text(item.owner || "(unowned)");
 }
 
@@ -208,6 +212,22 @@ function syncCurrent() {
 }
 
 function start() {
+  $("#menuButton").button({
+    icons: { primary: "menu-icon" },
+    text: false,
+  }).on("click", function() {
+    var ml = $("#menuList");
+    if (ml.dialog("isOpen")) {
+      ml.dialog("close");
+    } else {
+      ml.dialog("open");
+    }
+  });
+  $("#menuList").dialog({
+    dialogClass: "menu-list-dialog",
+    autoOpen: false,
+    position: { my: "right top", at: "right bottom-1", of: "#menuButton" },
+  });
   $("#itemSyncNow").on("click", syncCurrent);
   $("#itemProgressBar").progressbar({value: false}).hide();
   $("#itemForm").dialog({

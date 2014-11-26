@@ -12,7 +12,7 @@ staticdir = os.path.abspath(os.path.dirname(__file__))
 
 class ConnectionPool(object):
     def __init__(self, config):
-        self.connectargs = config['priorityapi']['database.connect.args']
+        self.connectargs = config['prioritytool']['database.connect.args']
         self.lock = threading.Lock()
         self.connectpool = []
 

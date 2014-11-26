@@ -1,3 +1,7 @@
+html {
+  font-size: 12px;
+}
+
 body {
   font-family: sans-serif;
 
@@ -5,8 +9,7 @@ body {
   flex-direction: column;
   margin: 0;
   padding: 0;
-  height: 100%;
-  font-size: 12px;
+  height: 100vh;
 }
 
 .invisible {
@@ -17,17 +20,24 @@ input[disabled] {
   background-color: #EEE;
 }
 
-#header,
 #main {
   display: flex;
   flex-direction: column;
 }
 
+.maintext {
+  padding: 10px;
+}
+
 #header {
   background-color: #333;
   color: white;
-
   padding: 2px;
+}
+
+#header * {
+  color: inherit;
+  text-decoration: inherit;
 }
 
 #main {
@@ -35,11 +45,12 @@ input[disabled] {
   color: black;
   flex-grow: 1;
   align-items: stretch;
+  overflow-y: auto;
 }
 
 #header h1 {
   text-align: center;
-  font-size: 120%;
+  font-size: 1.2rem;
   margin: 2px;
 }
 
@@ -110,10 +121,34 @@ form {
   width: 100%;
 }
 
-.item-summary {
+.nowrap {
   white-space: nowrap;
 }
 
 .item-form-dialog .ui-dialog-titlebar-close {
   visibility: hidden;
+}
+
+.item-bugid {
+  text-decoration: none;
+}
+
+#menuButton {
+  float: right;
+}
+
+.menu-icon {
+  background-image: url(menu-alt-16.png) !important;
+}
+
+#menuList {
+  list-style-type: none;
+  text-align: right;
+  min-height: auto !important;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.menu-list-dialog .ui-dialog-titlebar {
+  display: none;
 }
